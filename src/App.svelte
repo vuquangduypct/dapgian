@@ -8,14 +8,14 @@ import { each } from "svelte/internal";
     y: number
   }
 
-	let positions: Position[] = [
+  let positions: Position[] = [
     {alive: true, x: 10, y: 120}, 
     {alive: false, x: 100, y: 200}
   ]
 
   setInterval(() => {
-    const x = Math.random() * 200
-    const y = Math.random() * 200
+    const x = Math.random() * window.innerWidth
+    const y = Math.random() * window.innerHeight
     const pos = {alive: true, x, y}
     positions = [...positions, pos]
   }, 2000)
