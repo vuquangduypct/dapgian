@@ -50,12 +50,15 @@
     positions = positions
   }
 
+  const onNewGame = () => {
+    positions = []
+  }
+
   let isHitted = false
   // if (isHitted === true) {
   //   'alive.png' = 'dead.png'
   // }
 
-  let newGame = false
   if (timeleft === 0) {
     // counter_list.display
   }
@@ -128,7 +131,7 @@
     />
   {/each}
 
-  <button onclick={() => newGame = true}>New Game</button>
+  <button on:click={onNewGame}>New Game</button>
 </main>
 
 <style>
