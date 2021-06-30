@@ -12,15 +12,43 @@
     {alive: false, x: 100, y: 200}
   ]
 
-  setInterval(() => {
+  const setFullscreenSize = () => {
     document.getElementsByTagName('main')[0].style.width = `${window.innerWidth}px`
     document.getElementsByTagName('main')[0].style.height = `${window.innerHeight}px`
+  }
 
+  const addCockroach = () => {
     const x = Math.random() * window.innerWidth - IMG_SIZE
     const y = Math.random() * window.innerHeight - IMG_SIZE
     const pos = {alive: true, x, y}
     positions = [...positions, pos]
+  }
+
+  setInterval(() => {
+    setFullscreenSize()
+    //addCockroach()
   }, 2000)
+
+  const isInsideRect = (x: number, y: number, left: number, top: number, right: number, bottom: number): boolean => {
+    return left < x && x < right && top < y && y < bottom
+  }
+
+  const onHammerDown = (event: MouseEvent) => {
+    const x = event.x
+    const y = event.y
+
+    for (const p of positions) {
+      if (!p.alive) {
+        continue
+      }
+
+      if (isInsideRect(x, y, p.x, p.y, p.x + IMG_SIZE, p.y + IMG_SIZE)) {
+        p.alive = false
+      }
+    }
+
+    positions = positions
+  }
 
   let isHitted = false
   // if (isHitted === true) {
@@ -91,7 +119,7 @@
   }
 </script>
 
-<main>
+<main on:mousedown={onHammerDown}>
   {#each positions as pos}
     <img 
       alt={pos.alive ? 'Alive' : 'Dead'}
