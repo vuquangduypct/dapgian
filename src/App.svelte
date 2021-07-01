@@ -74,29 +74,29 @@
   }
   resetCountDown()
 
+  const countDeadCockroaches = (positions: Position[]): number => {
+    let deadCockroaches = 0
+    for (const position of positions) {
+      if (position.alive === false) {
+        deadCockroaches++
+      }
+    }
+
+    return deadCockroaches
+  } 
+
+  $: deadCockroaches = countDeadCockroaches(positions)
+
   const onNewGame = () => {
     positions = []
     resetCountDown()
-  }
-
-  function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function(){
-      this.sound.play();
-    }
-    this.stop = function() {
-      this.sound.pause();
-    }
-  }
+  }  
 </script>
 
 <main on:mousedown={onHammerDown}>
-  <span id="countdown">{remainingSeconds}</span>
+  <span id="countdown">{remainingSeconds}s</span>
+
+  <span id="count-dead">{deadCockroaches}</span>
 
   {#if remainingSeconds === 0} 
     <button on:click={onNewGame}>New Game</button>  
@@ -113,7 +113,12 @@
 
 <style>
   #countdown {
-    color: red; 
+    color: blue; 
+    font-size: 48px;
+  }
+
+  #count-dead {
+    color: red;
     font-size: 48px;
   }
 
