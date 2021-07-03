@@ -8,7 +8,7 @@
   }
 
   let positions: Position[] = [
-    {alive: true, x: 10, y: 120}, 
+    {alive: true, x: 10, y: 120},
     {alive: false, x: 100, y: 200}
   ]
 
@@ -47,6 +47,9 @@
     const x = event.x
     const y = event.y
 
+    let hit = false
+
+
     for (const p of positions) {
       if (!p.alive) {
         continue
@@ -54,10 +57,12 @@
 
       if (isInsideRect(x, y, p.x, p.y, p.x + IMG_SIZE, p.y + IMG_SIZE)) {
         p.alive = false
+        hit = true
       }
     }
 
     positions = positions
+    playSound(hit ? 'hit.mp3' : 'miss.mp3')
   }
 
   const countDown = () => {
@@ -83,14 +88,24 @@
     }
 
     return deadCockroaches
-  } 
+  }
 
   $: deadCockroaches = countDeadCockroaches(positions)
 
   const onNewGame = () => {
     positions = []
     resetCountDown()
-  }  
+  }
+
+  const playSound = (src: string) => {
+    const sound = document.createElement('audio')
+    sound.src = src
+    sound.setAttribute('preload', 'auto')
+    sound.setAttribute('controls', 'none')
+    sound.style.display = 'none'
+    document.body.appendChild(sound)
+    sound.play()
+  }
 </script>
 
 <main on:mousedown={onHammerDown}>
@@ -98,12 +113,12 @@
 
   <span id="count-dead">{deadCockroaches}</span>
 
-  {#if remainingSeconds === 0} 
-    <button on:click={onNewGame}>New Game</button>  
+  {#if remainingSeconds === 0}
+    <button on:click={onNewGame}>New Game</button>
   {/if}
 
   {#each positions as pos}
-    <img 
+    <img
       alt={pos.alive ? 'Alive' : 'Dead'}
       src={pos.alive ? 'alive.png' : 'dead.png'}
       style="left: {pos.x}px; top: {pos.y}px;"
@@ -113,7 +128,7 @@
 
 <style>
   #countdown {
-    color: blue; 
+    color: blue;
     font-size: 48px;
   }
 
