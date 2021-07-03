@@ -143,11 +143,11 @@
   }
 
   * {
-    cursor: url("/hammerup.png"), auto;
+    cursor: url("../hammerup.png"), auto;
   }
 
   *:active {
-    cursor: url("/hammerdown.png"), auto;
+    cursor: url("../hammerdown.png"), auto;
   }
 
   main {
